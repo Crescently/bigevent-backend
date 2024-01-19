@@ -1,4 +1,4 @@
-package com.crescentltmon.bigeventbackend;
+package com.crescentlytmon.bigeventbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

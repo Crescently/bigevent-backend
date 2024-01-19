@@ -1,4 +1,4 @@
-package com.crescentltmon.bigeventbackend;
+package com.bigeventbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
