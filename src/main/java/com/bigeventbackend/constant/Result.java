@@ -17,13 +17,13 @@ import java.io.Serializable;
 public class Result<T> implements Serializable {
 
     private Integer code; //编码：0成功，1和其它数字为失败
-    private String msg; //错误信息
+    private String msg; //信息
     private T data; //数据
 
     public static <T> Result<T> success() {
         Result<T> result = new Result<>();
         result.code = 0;
-        result.msg = "success";
+        result.msg = MessageConstant.SUCCESS;
         return result;
     }
 
@@ -31,7 +31,7 @@ public class Result<T> implements Serializable {
         Result<T> result = new Result<>();
         result.data = object;
         result.code = 0;
-        result.msg = "success";
+        result.msg = MessageConstant.SUCCESS;
         return result;
     }
 
