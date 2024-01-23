@@ -1,7 +1,7 @@
 package com.bigeventbackend.controller;
 
-import com.bigeventbackend.constant.MessageConstant;
 import com.bigeventbackend.common.Result;
+import com.bigeventbackend.constant.MessageConstant;
 import com.bigeventbackend.pojo.entity.User;
 import com.bigeventbackend.service.UserService;
 import com.bigeventbackend.utils.JwtUtil;
@@ -10,12 +10,15 @@ import com.bigeventbackend.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -25,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 用户注册
@@ -65,6 +71,9 @@ public class UserController {
             claims.put("id", loginUser.getId());
             claims.put("username", loginUser.getUsername());
             String token = JwtUtil.genToken(claims);
+            // 把token存入redis
+            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+            operations.set(token, token, 1, TimeUnit.HOURS);
             return Result.success(token);
         }
         return Result.error(MessageConstant.PASSWORD_ERROR);
@@ -99,13 +108,12 @@ public class UserController {
     }
 
     @PatchMapping("/updatePwd")
-    public Result updatePassword(@RequestBody Map<String, String> params) {
+    public Result updatePassword(@RequestBody Map<String, String> params, @RequestHeader("Authorization") String token) {
         // 1.校验参数
         String oldPassword = params.get("old_pwd");
         String newPassword = params.get("new_pwd");
         String rePassword = params.get("re_pwd");
-        if (!StringUtils.hasLength(oldPassword) || !StringUtils.hasLength(newPassword) || !StringUtils.hasLength(rePassword)
-        ) {
+        if (!StringUtils.hasLength(oldPassword) || !StringUtils.hasLength(newPassword) || !StringUtils.hasLength(rePassword)) {
             return Result.error(MessageConstant.PARAM_ERROR);
         }
         // 原密码是否正确
@@ -119,6 +127,9 @@ public class UserController {
             return Result.error(MessageConstant.TWO_PWD_NOT_MATCH);
         }
         userService.updatePassword(newPassword);
+        // 删除redis中的token
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+        operations.getOperations().delete(token);
         return Result.success();
     }
 
