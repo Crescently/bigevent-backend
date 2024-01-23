@@ -1,7 +1,7 @@
 package com.bigeventbackend.controller;
 
 import com.bigeventbackend.constant.MessageConstant;
-import com.bigeventbackend.constant.Result;
+import com.bigeventbackend.common.Result;
 import com.bigeventbackend.pojo.entity.User;
 import com.bigeventbackend.service.UserService;
 import com.bigeventbackend.utils.JwtUtil;
@@ -20,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Validated // 参数校验工具
+@CrossOrigin
 public class UserController {
 
     @Autowired

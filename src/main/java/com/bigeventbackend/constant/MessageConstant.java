@@ -1,5 +1,8 @@
 package com.bigeventbackend.constant;
 
+/**
+ * 响应信息提示
+ */
 public class MessageConstant {
     public static final String USERNAME_EXIST = "用户名已存在";
     public static final String USERNAME_ERROR = "用户名错误";

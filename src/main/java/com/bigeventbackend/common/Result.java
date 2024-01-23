@@ -1,5 +1,6 @@
-package com.bigeventbackend.constant;
+package com.bigeventbackend.common;
 
+import com.bigeventbackend.constant.MessageConstant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

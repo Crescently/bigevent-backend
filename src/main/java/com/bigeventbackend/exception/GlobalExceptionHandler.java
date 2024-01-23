@@ -1,6 +1,6 @@
 package com.bigeventbackend.exception;
 
-import com.bigeventbackend.constant.Result;
+import com.bigeventbackend.common.Result;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
