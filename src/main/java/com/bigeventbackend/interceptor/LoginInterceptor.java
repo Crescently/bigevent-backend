@@ -24,11 +24,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         // 验证token是否有效，如果无效则返回错误信息
         try {
             // 从redis中获取token
-            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-            String redisToken = operations.get(token);
-            if (redisToken == null){
-                throw new RuntimeException("token无效");
-            }
+//            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+//            String redisToken = operations.get(token);
+//            if (redisToken == null){
+//                throw new RuntimeException("token无效");
+//            }
 
             // 解析token
             Map<String, Object> claims = JwtUtil.parseToken(token);

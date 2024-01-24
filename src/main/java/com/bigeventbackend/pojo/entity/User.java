@@ -6,11 +6,13 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
 
 @Data
 public class User {
+
     @NotNull
     private Integer id;//主键ID
 
@@ -32,4 +34,6 @@ public class User {
     private LocalDateTime createTime;//创建时间
 
     private LocalDateTime updateTime;//更新时间
+
+
 }

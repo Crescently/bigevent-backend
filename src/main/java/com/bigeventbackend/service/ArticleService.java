@@ -8,4 +8,9 @@ public interface ArticleService {
 
     PageBean<Article> getArticleList(Integer pageNum, Integer pageSize, Integer categoryId, String state);
 
+    void updateArticle(Article article);
+
+    void deleteArticle(Integer id);
+
+    Article getArticleById(Integer id);
 }

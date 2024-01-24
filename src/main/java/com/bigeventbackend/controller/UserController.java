@@ -72,8 +72,8 @@ public class UserController {
             claims.put("username", loginUser.getUsername());
             String token = JwtUtil.genToken(claims);
             // 把token存入redis
-            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-            operations.set(token, token, 1, TimeUnit.HOURS);
+//            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+//            operations.set(token, token, 1, TimeUnit.HOURS);
             return Result.success(token);
         }
         return Result.error(MessageConstant.PASSWORD_ERROR);
@@ -119,17 +119,17 @@ public class UserController {
         // 原密码是否正确
         Map<String, Object> map = ThreadLocalUtil.get();
         String username = (String) map.get("username");
-        User loginUser = userService.getUserInfoByName(username);
-        if (!loginUser.getPassword().equals(Md5Util.getMD5String(oldPassword))) {
+        User loginUser = userService.getUserInfoByName(username);;
+        if (!Md5Util.checkPassword(oldPassword,loginUser.getPassword())) {
             return Result.error(MessageConstant.OLD_PWD_ERROR);
         }
         if (!newPassword.equals(rePassword)) {
             return Result.error(MessageConstant.TWO_PWD_NOT_MATCH);
         }
         userService.updatePassword(newPassword);
-        // 删除redis中的token
-        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-        operations.getOperations().delete(token);
+//        // 删除redis中的token
+//        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+//        operations.getOperations().delete(token);
         return Result.success();
     }
 
